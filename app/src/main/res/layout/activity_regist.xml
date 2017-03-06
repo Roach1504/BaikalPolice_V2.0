@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.turist.RegistActivity"
+    >
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login"
+        android:hint="Логин"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="54dp"
+        android:layout_alignLeft="@+id/pass"
+        android:layout_alignStart="@+id/pass"
+        android:layout_alignRight="@+id/pass"
+        android:layout_alignEnd="@+id/pass"
+        android:paddingTop="20dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/pass"
+        android:hint="Пароль"
+        android:layout_below="@+id/login"
+        android:layout_alignLeft="@+id/name"
+        android:layout_alignStart="@+id/name"
+        android:paddingTop="20dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+
+        android:ems="10"
+        android:id="@+id/surname"
+        android:hint="Фамилия"
+        android:paddingTop="20dp"
+        android:layout_above="@+id/name"
+        android:layout_alignLeft="@+id/name"
+        android:layout_alignStart="@+id/name" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+
+        android:ems="10"
+        android:id="@+id/name"
+        android:hint="Имя"
+        android:paddingTop="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/fname"
+        android:layout_alignStart="@+id/fname" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Отчество"
+        android:ems="10"
+        android:id="@+id/fname"
+        android:paddingTop="20dp"
+        android:layout_below="@+id/name"
+        android:layout_alignLeft="@+id/phone"
+        android:layout_alignStart="@+id/phone" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/phone"
+        android:hint="Номер телефона"
+        android:layout_below="@+id/fname"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Зарегистрироваться"
+        android:id="@+id/reg"
+        android:layout_below="@+id/phone"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <Button
+        android:text="Создать группу"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_group"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/add_group"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
+    <Button
+        android:text="Присоеденится к группе"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_group"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:id="@+id/name_group"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+        android:text="Группа: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/name_group"
+        android:layout_toLeftOf="@+id/name_group"
+        android:layout_toStartOf="@+id/name_group"
+        android:id="@+id/textView5"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+
+        android:id="@+id/checkbox_open"
+        android:fontFamily="sans-serif"
+        android:layout_alignBaseline="@+id/name_group"
+        android:layout_alignBottom="@+id/name_group"
+        android:layout_toRightOf="@+id/name_group"
+        android:layout_toEndOf="@+id/name_group"/>
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/addgroup"
+        android:fontFamily="sans-serif"
+        android:layout_alignBaseline="@+id/name_group"
+        android:layout_alignBottom="@+id/name_group"
+        android:layout_toRightOf="@+id/name_group"
+        android:layout_toEndOf="@+id/name_group"/>
+
+
+</RelativeLayout>

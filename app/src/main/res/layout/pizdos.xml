@@ -1,0 +1,105 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:id="@+id/frag"
+    >
+
+    <!--<include-->
+    <!--layout="@layout/fragment_turist"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:visibility="visible"-->
+
+    <!--/>-->
+    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:map="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:id="@+id/map"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
+        <!--tools:context="com.example.turist.TuristFragment"-->
+
+        <!--android:layout_weight="1.01"-->
+
+
+        <!--&gt;-->
+    <!--</fragment>-->
+
+    <Button
+        android:layout_width="148dp"
+        android:layout_height="70dp"
+        android:text="Начать прогулку"
+        android:id="@+id/send"
+        android:background="#10797979"
+
+        android:layout_gravity="right"
+        android:layout_weight="0.06"
+        android:layout_above="@+id/exit"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="продолжить"
+        android:id="@+id/pause"
+        android:background="#10797979"
+        android:layout_above="@+id/send"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выход"
+        android:background="#10797979"
+        android:id="@+id/exit"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp" />
+
+    <Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chronometer"
+
+        android:textAlignment="center"
+        android:textSize="@dimen/cast_intro_overlay_button_margin_bottom"
+
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textY"
+        android:layout_above="@+id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textX"
+        android:layout_above="@+id/textY"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ваши координаты:"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/textX"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+    <Button
+        android:id="@+id/redProf"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@+id/spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/button_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Редактирование профиля"
+        android:textColor="@color/white"
+        android:visibility="visible"/>
+
+    <CheckBox
+        android:id="@+id/avtoNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="32dp"
+        android:text="Разрешить добавлять в группы"
+        android:textSize="17dp"/>
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background"
+        android:text="Выход"
+        android:textColor="@color/white"
+        />
+
+    <Button
+        android:id="@+id/changePass"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@+id/redProf"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/button_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Изменить пароль"
+        android:textColor="@color/white"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Период опроса в секундах: "
+        android:textSize="17dp"
+        android:layout_below="@+id/avtoNew"
+        android:layout_alignLeft="@+id/avtoNew"
+        android:layout_alignStart="@+id/avtoNew"/>
+
+
+</RelativeLayout>
+
+

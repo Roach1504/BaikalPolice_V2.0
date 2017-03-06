@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:padding="8dp">
+
+                <TextView
+                    android:text="ФИО:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textfio"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimary"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_create_white_24dp"
+                    android:id="@+id/imagefio"
+                    android:background="@drawable/button_background"
+                    android:padding="8dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_top"
+                android:padding="8dp"
+                >
+
+                <TextView
+                    android:text="Номера телефонов:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phone"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimary"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_control_point_white_24dp"
+                    android:id="@+id/imagephone"
+
+                    android:background="@drawable/button_background"
+                    android:padding="8dp"
+                    />
+
+            </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+            <TextView
+                android:id="@+id/list_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_delete_black_24dp"
+                android:id="@+id/delete_phone"
+                android:layout_gravity="bottom"
+
+                android:background="@drawable/button_background"
+                android:padding="8dp"
+                />
+</LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_top"
+                android:padding="8dp">
+
+                <TextView
+                    android:text="Email:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textemail"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimary"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_control_point_white_24dp"
+                    android:id="@+id/imageemil"
+
+                    android:padding="8dp"
+                    android:background="@drawable/button_background"
+                    />
+            </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+            <TextView
+                android:id="@+id/list_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_delete_black_24dp"
+            android:id="@+id/delete_email"
+            android:visibility="invisible"
+            android:layout_gravity="bottom"
+
+            android:background="@drawable/button_background"
+            android:padding="8dp"
+            />
+    </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_top"
+                android:padding="8dp">
+
+                <TextView
+                    android:text="Социальные сети:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textsoc"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimary"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_control_point_white_24dp"
+                    android:id="@+id/imagesoc"
+
+                    android:padding="8dp"
+                    android:background="@drawable/button_background"
+                    />
+            </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+            <TextView
+                android:id="@+id/list_social"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_delete_black_24dp"
+            android:id="@+id/delete_soc"
+            android:layout_gravity="bottom"
+
+            android:background="@drawable/button_background"
+            android:padding="8dp"
+            android:visibility="invisible"
+            />
+        </LinearLayout>
+
+            <Button
+                android:text="Сохранить изменения"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:visibility="invisible"
+                android:background="@drawable/button_background"
+                android:textColor="@color/white"
+                android:id="@+id/save"/>
+
+        </LinearLayout>
+
+    </ScrollView>
