@@ -736,6 +736,7 @@ public class TuristFragment extends Fragment implements
             sharedPreferences.edit().putInt("period", backup2).commit();
             markONE=0;
             super.onPostExecute(aVoid);
+            super.onPostExecute(aVoid);
 
 //
         }
