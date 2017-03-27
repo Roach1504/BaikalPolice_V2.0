@@ -1,23 +1,16 @@
 package com.example.turist;
 
-import android.app.Activity;
-import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -124,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                aD.dismiss();
                 JSONArray jsonArray = new JSONArray();
                 //ArrayList<String> list = new ArrayList<String>();
                 try {
@@ -175,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Back", "click");
     }
 
+    public ProgressDialog aD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,12 +214,23 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("Login", slogin);
                     Log.e("password", spass);
 
-                    if (hasConnection(MainActivity.this)) {
-                        writeCateg(MainActivity.this);
-                    }
-                    else Toast.makeText(MainActivity.this, "Нет подключения к интернету", Toast.LENGTH_LONG).show();
+                    aD = new ProgressDialog(MainActivity.this);
+                    aD.setMessage("Авторизация...");
+                    aD.setIndeterminate(true);
+                    aD.setCancelable(false);
+                    aD.show();
 
                     if (hasConnection(MainActivity.this)) {
+                        writeCateg(MainActivity.this);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Нет подключения к интернету", Toast.LENGTH_LONG).show();
+                        aD.dismiss();
+                    }
+
+
+
+                    if (hasConnection(MainActivity.this)) {
+
                         class INSERTtoGps extends AsyncTask<Void, Void, Void> {
 
 
@@ -258,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     Request request = new Request.Builder()
                                             .url("http://109.120.189.141:81/web/api/track/login")
+                                            //.url("http://192.168.0.103/web/api/track/login")
                                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
                                             .post(formBody)
                                             .build();
@@ -299,8 +306,10 @@ public class MainActivity extends AppCompatActivity {
                                 super.onPostExecute(aVoid);
                                 cb=getStatus("id", message);
 
-                               // cb = "69";//// TODO: 01.02.2017
 
+                                // cb = "69";//// TODO: 01.02.2017
+
+                                aD.dismiss();
                                 if(!cb.isEmpty()){
                                     Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                                     sharedPreferences1.edit().putString("id", cb).commit();

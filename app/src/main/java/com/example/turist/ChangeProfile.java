@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -380,7 +378,9 @@ public class ChangeProfile extends Fragment {
                 JSONArray tel = new JSONArray(phones);
                 JSONArray mail = new JSONArray(emails);
                 JSONArray soci = new JSONArray(socials);
-                Log.e("setingSave", tel+" "+mail+ " " + soci);
+                Log.e("setingSave", tel.toString() + " " + mail.toString() + " " + soci.toString());
+
+
 
 
                 try {
@@ -396,10 +396,12 @@ public class ChangeProfile extends Fragment {
 
                     Request request = new Request.Builder()
                             .url("http://109.120.189.141:81/web/api/track/change-profile")
+                            //.url("http://192.168.0.103/web/api/track/change-profile")
                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
                             .post(formBody)
                             .build();
 
+                    Log.e("request", request + " :request");
                     okhttp3.Call call = client.newCall(request);
                     Response response = call.execute();
                     Callback callback = new Callback() {
