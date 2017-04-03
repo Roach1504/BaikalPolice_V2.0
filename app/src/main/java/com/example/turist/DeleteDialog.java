@@ -1,40 +1,24 @@
 package com.example.turist;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.vk.sdk.VKUIHelper.getApplicationContext;
 
 
 public class DeleteDialog  extends DialogFragment {
@@ -45,6 +29,9 @@ public class DeleteDialog  extends DialogFragment {
     String markers;
     ArrayList<String> listss = new ArrayList<>();
     ArrayList<String> list_return;
+    JSONArray backUpPhone;
+    JSONArray backUpEmail;
+    JSONArray backUpSocial;
 
 
 
@@ -66,6 +53,16 @@ public class DeleteDialog  extends DialogFragment {
             }
             markers = savedInstanceState.getString("title");
             getDialog().setTitle(savedInstanceState.getString("title"));
+
+            try {
+                backUpPhone = new JSONArray(savedInstanceState.getString("beakUpPhone"));
+                backUpEmail = new JSONArray(savedInstanceState.getString("beakUpEmail"));
+                backUpSocial = new JSONArray(savedInstanceState.getString("beakUpSocials"));
+            } catch (JSONException e) {
+                Log.e("Error", "beakUp");
+                e.printStackTrace();
+            }
+
         }
         else{
             Log.e("onCreadDialog", "false");
@@ -122,19 +119,18 @@ Log.e("listss",listss.toString());
                         sos.put(listss.get(i));
                     }
                 }
+
                 Bundle bundle = new Bundle();
                 bundle.putString("marker", markers);
                 Log.e("return", sos.toString());
                 bundle.putString("body", sos.toString());
+                bundle.putString("beakUpPhone", backUpPhone.toString());
+                bundle.putString("beakUpEmail", backUpEmail.toString());
+                bundle.putString("beakUpSocials", backUpSocial.toString());
                 ChangeProfile changeProfile=new ChangeProfile();
-
                 changeProfile.setArguments(bundle);
-
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-               // fragmentTransaction.remove(changeProfile).commit();
-//                fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.add(R.id.first_setting,changeProfile).commit();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.replace(R.id.first_setting,changeProfile).commit();

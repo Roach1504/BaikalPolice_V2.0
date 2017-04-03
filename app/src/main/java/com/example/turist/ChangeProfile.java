@@ -89,6 +89,9 @@ public class ChangeProfile extends Fragment {
     }
 
 
+    JSONArray backUpPhone;
+    JSONArray backUpEmail;
+    JSONArray backUpSocial;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
@@ -112,11 +115,32 @@ public class ChangeProfile extends Fragment {
         socialList = (TextView) view.findViewById(R.id.list_social);
 
 
+        savedInstanceState = this.getArguments();
+        if (savedInstanceState != null) {
+            try {
+                backUpPhone = new JSONArray(savedInstanceState.getString("beakUpPhone"));
+                backUpEmail = new JSONArray(savedInstanceState.getString("beakUpEmail"));
+                backUpSocial = new JSONArray(savedInstanceState.getString("beakUpSocials"));
+            } catch (JSONException e) {
+                Log.e("Error", "beakUp");
+                backUpEmail = null;
+                e.printStackTrace();
+            }
+        }
         Log.e("share", sharedPreferences.getString("contact","shit"));
-        phones = getList(getStatus("phone", sharedPreferences.getString("contact", "")));
-        emails = getList(getStatus("email", sharedPreferences.getString("contact", "")));
-        socials = getList(getStatus("social", sharedPreferences.getString("contact", "")));
+        if (backUpEmail == null) {
+            Log.e("ee", "null");
+            phones = getList(getStatus("phone", sharedPreferences.getString("contact", "")));
+            emails = getList(getStatus("email", sharedPreferences.getString("contact", "")));
+            socials = getList(getStatus("social", sharedPreferences.getString("contact", "")));
+        } else {
+            Log.e("ee", "backUp");
+            phones = getList(backUpPhone.toString());
+            emails = getList(backUpEmail.toString());
+            socials = getList(backUpSocial.toString());
 
+            Log.e("ee", "backUp " + phones + '\n' + emails + '\n' + socials);
+        }
 //        emails.add("");
 //        socials.add("");
 
@@ -141,6 +165,10 @@ public class ChangeProfile extends Fragment {
         else{
             phoneDelete.setVisibility(View.INVISIBLE);
         }
+        phoneList.setText(phones.get(0));
+        for (int i = 1; i < phones.size(); i++) {
+            phoneList.setText(phoneList.getText() + "\n" + phones.get(i));
+        }
 
         phoneDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +177,13 @@ public class ChangeProfile extends Fragment {
                 bundle.putString("title", "Удаление номера");
 
                     bundle.putString("list", phones.toString());
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social.toString());
                     FragmentManager fm = getFragmentManager();
                     DeleteDialog deleteDialog = new DeleteDialog();
                     deleteDialog.setArguments(bundle);
@@ -163,6 +198,13 @@ public class ChangeProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Удаление email");
                 bundle.putString("list", emails.toString());
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social.toString());
                 FragmentManager fm = getFragmentManager();
                 DeleteDialog deleteDialog= new DeleteDialog();
                 deleteDialog.setArguments(bundle);
@@ -175,13 +217,18 @@ public class ChangeProfile extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Удаление соц.Сети");
-                Log.e("email", emails.toString());
-                Log.e("social", socials.get(0));
                 JSONArray social = new JSONArray();
                 for(int i = 0; i < socials.size(); i++){
                     social.put(socials.get(i));
                 }
                 bundle.putString("list", social.toString());
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social2 = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social2.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social2.toString());
                 FragmentManager fm = getFragmentManager();
                 DeleteDialog deleteDialog= new DeleteDialog();
                 deleteDialog.setArguments(bundle);
@@ -190,10 +237,7 @@ public class ChangeProfile extends Fragment {
         });
 
 
-        phoneList.setText(phones.get(0));
-        for(int i = 1; i <phones.size(); i++){
-            phoneList.setText(phoneList.getText()+"\n"+phones.get(i));
-        }
+
 
 
 
@@ -203,12 +247,20 @@ public class ChangeProfile extends Fragment {
         phoneButton = (ImageButton) view.findViewById(R.id.imagephone);
         emailButton = (ImageButton) view.findViewById(R.id.imageemil);
         socialButton = (ImageButton)view.findViewById(R.id.imagesoc);
+
         fioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Изменить имя");
                 bundle.putString("hint", "Введите имя");
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social.toString());
                 FragmentManager fm = getFragmentManager();
                 DialogRenameFio dialogRenameFio = new DialogRenameFio();
                 dialogRenameFio.setArguments(bundle);
@@ -221,6 +273,13 @@ public class ChangeProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Добавить телефон");
                 bundle.putString("hint", "Введите телефон");
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social.toString());
                 FragmentManager fm = getFragmentManager();
                 DialogRenameFio dialogRenameFio = new DialogRenameFio();
                 dialogRenameFio.setArguments(bundle);
@@ -233,6 +292,13 @@ public class ChangeProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Добавить email");
                 bundle.putString("hint", "Введите email");
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social.toString());
                 FragmentManager fm = getFragmentManager();
                 DialogRenameFio dialogRenameFio = new DialogRenameFio();
                 dialogRenameFio.setArguments(bundle);
@@ -245,6 +311,13 @@ public class ChangeProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Добавить соц. сеть");
                 bundle.putString("hint", "Введите ссылку");
+                bundle.putString("beakUpPhone", phones.toString());
+                bundle.putString("beakUpEmail", emails.toString());
+                JSONArray social = new JSONArray();
+                for (int i = 0; i < socials.size(); i++) {
+                    social.put(socials.get(i));
+                }
+                bundle.putString("beakUpSocials", social.toString());
                 FragmentManager fm = getFragmentManager();
                 DialogRenameFio dialogRenameFio = new DialogRenameFio();
                 dialogRenameFio.setArguments(bundle);
@@ -267,15 +340,20 @@ public class ChangeProfile extends Fragment {
                     break;
                 }
                 case "Введите телефон":{
+
                     phoneList.setText(phoneList.getText()+"\n"+savedInstanceState.getString("body"));
+                    phones.add(savedInstanceState.getString("body"));
+
                     break;
                 }
                 case "Введите email":{
                     emailList.setText(emailList.getText()+"\n"+savedInstanceState.getString("body"));
+                    emails.add(savedInstanceState.getString("body"));
                     break;
                 }
                 case "Введите ссылку":{
                     socialList.setText(socialList.getText()+"\n"+savedInstanceState.getString("body"));
+                    socials.add(savedInstanceState.getString("body"));
                     break;
                 }
                 case "Удаление номера":{
@@ -285,6 +363,7 @@ public class ChangeProfile extends Fragment {
                         for(int i = 1; i < lis.length(); i++){
                             phoneList.setText(phoneList.getText()+"\n"+lis.get(i));
                         }
+                        phones = getList(lis.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -297,6 +376,7 @@ public class ChangeProfile extends Fragment {
                         for(int i = 1; i < lis.length(); i++){
                             emailList.setText(emailList.getText()+"\n"+lis.get(i));
                         }
+                        emails = getList(lis.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                         emailList.setText("");
@@ -314,6 +394,7 @@ public class ChangeProfile extends Fragment {
                         for(int i = 1; i < lis.length(); i++){
                             socialList.setText(socialList.getText()+"\n"+lis.get(i));
                         }
+                        socials = getList(lis.toString());
                     } catch (JSONException e) {
                         Log.e("error", "del code 1");
                         socialList.setText("");

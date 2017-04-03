@@ -1,8 +1,7 @@
 package com.example.turist;
 
-import android.renderscript.ScriptGroup;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
@@ -14,10 +13,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class DialogRenameFio extends DialogFragment{
     EditText name;
     Button accept;
     Button cancel;
+    JSONArray backUpPhone;
+    JSONArray backUpEmail;
+    JSONArray backUpSocial;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +39,15 @@ public class DialogRenameFio extends DialogFragment{
             }
             if(savedInstanceState.getString("hint").equals("Введите email")){
                 name.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            }
+
+            try {
+                backUpPhone = new JSONArray(savedInstanceState.getString("beakUpPhone"));
+                backUpEmail = new JSONArray(savedInstanceState.getString("beakUpEmail"));
+                backUpSocial = new JSONArray(savedInstanceState.getString("beakUpSocials"));
+            } catch (JSONException e) {
+                Log.e("Error", "beakUp");
+                e.printStackTrace();
             }
         }
         else{
@@ -56,6 +71,10 @@ public class DialogRenameFio extends DialogFragment{
                         Log.e("marker", name.getHint().toString());
                         bundle.putString("marker", name.getHint().toString());
                         bundle.putString("body", name.getText().toString());
+                        bundle.putString("beakUpPhone", backUpPhone.toString());
+                        bundle.putString("beakUpEmail", backUpEmail.toString());
+                        bundle.putString("beakUpSocials", backUpSocial.toString());
+
                         ChangeProfile changeProfile = new ChangeProfile();
                         changeProfile.setArguments(bundle);
                         FragmentManager fragmentManager = getFragmentManager();

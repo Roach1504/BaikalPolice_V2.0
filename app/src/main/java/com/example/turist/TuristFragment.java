@@ -1,13 +1,10 @@
 package com.example.turist;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +14,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -25,8 +21,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,9 +47,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -266,6 +258,45 @@ public class TuristFragment extends Fragment implements
         });
 
 
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.e("PERMISS", "INTERNET true");
+        } else {
+            Log.e("PERMISS", "INTERNET FALSE");
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.e("PERMISS", "WRITE_EXTERNAL_STORAGE true");
+        } else {
+            Log.e("PERMISS", "WRITE_EXTERNAL_STORAGE FALSE");
+
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_NETWORK_STATE)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.e("PERMISS", "ACCESS_NETWORK_STATE true");
+        } else {
+            Log.e("PERMISS", "ACCESS_NETWORK_STATE FALSE");
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.e("PERMISS", "ACCESS_COARSE_LOCATION true");
+        } else {
+            Log.e("PERMISS", "ACCESS_COARSE_LOCATION FALSE");
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.e("PERMISS", "ACCESS_FINE_LOCATION true");
+        } else {
+            Log.e("PERMISS", "ACCESS_FINE_LOCATION FALSE");
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), "com.google.android.providers.gsf.permission.READ_GSERVICES")
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.e("PERMISS", "READ_GSERVICES true");
+        } else {
+            Log.e("PERMISS", "READ_GSERVICES FALSE");
+        }
+
+
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -322,8 +353,8 @@ public class TuristFragment extends Fragment implements
                             mChronometer.start();
                             mTimer = new Timer();
                             mMyTimerTask = new MyTimerTask();
-                            Log.e(TAG, "period= " + String.valueOf(sharedPreferences.getInt("period", 0)));
-                            mTimer.schedule(mMyTimerTask, 1000, sharedPreferences.getInt("period", 5) * 1000);
+                            Log.e(TAG, "period= " + String.valueOf(sharedPreferences.getInt("period", 60)));
+                            mTimer.schedule(mMyTimerTask, 1000, sharedPreferences.getInt("period", 60) * 1000);
 
 
                         } else {
@@ -511,11 +542,11 @@ public class TuristFragment extends Fragment implements
                         markerS = cursor.getString(helpKey5);
 
 
-                        Log.e(TAG, "X = " + gpsmymX);
-                        Log.e(TAG, "Y = " + gpsmymY);
-                        Log.e(TAG, "Data = " + dataS);
-                        Log.e(TAG, "idtreak = " + idtreakS);
-                        Log.e(TAG, "markers = " + markerS);
+                        Log.e("GPS 2", "X = " + gpsmymX);
+                        Log.e("GPS 2", "Y = " + gpsmymY);
+                        Log.e("GPS 2", "Data = " + dataS);
+                        Log.e("GPS 2", "idtreak = " + idtreakS);
+                        Log.e("GPS 2", "markers = " + markerS);
 
                         geoArray = new JSONObject();
 
@@ -531,7 +562,7 @@ public class TuristFragment extends Fragment implements
                         Geo.put(geoArray);
                     }
                     while (cursor.moveToNext());
-                    Log.e(TAG, String.valueOf(Geo));
+                    Log.e("GPS 2 Отправка точек", String.valueOf(Geo));
                     OkHttpClient client = new OkHttpClient();
                     RequestBody formBody = new FormBody.Builder()
                             .addEncoded("points", Geo.toString())
@@ -557,7 +588,9 @@ public class TuristFragment extends Fragment implements
 
                     callback.onResponse(call, response);
                     message = response.body().string().trim();
-                    Log.e(TAG, "messageGPS 2(точки есть) и их "+Geo.length()+" = " + message);
+                    Log.e("GPS 2", "messageGPS 2(точки есть) и их " + Geo.length() + " = " + message);
+                    Log.e("GPS 2", response.message() + ":code");
+
 
                 } //else
                 {
@@ -570,7 +603,7 @@ public class TuristFragment extends Fragment implements
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     dataStart = dateFormat.format(new Date());
 
-                    Log.e(TAG, "Данных нет об ID");
+                    Log.e("GPS 2", "Данных нет об ID");
                     try {
                         geoArray.put("track_id", idtreak);
                         geoArray.put("x", gpsmyX);
@@ -581,7 +614,7 @@ public class TuristFragment extends Fragment implements
                         e.printStackTrace();
                     }
                     Geo.put(geoArray);
-                    Log.e(TAG, "json GPS2 = " + Geo.toString());
+                    Log.e("GPS 2", "json GPS2 = " + Geo.toString());
                     OkHttpClient client = new OkHttpClient();
                     RequestBody formBody = new FormBody.Builder()
                             .addEncoded("points", Geo.toString())
@@ -606,8 +639,8 @@ public class TuristFragment extends Fragment implements
                     };
                     callback.onResponse(call, response);
                     message = response.body().string().trim();
-                    Log.e(TAG, message);
-                    Log.e(TAG, "messageGPS 2 (точек нет)= " + message);
+                    Log.e("GPS 2", message);
+                    Log.e("GPS 2", "messageGPS 2 (точек нет)= " + message);
                 }
 
 //                                idreg = getStatus("id",srt);
@@ -621,7 +654,6 @@ public class TuristFragment extends Fragment implements
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
 
             if(markONE==0){
                 markONE=1;
@@ -673,15 +705,12 @@ public class TuristFragment extends Fragment implements
         protected Void doInBackground(Void... params) {
             try {
 
-
-                Log.e(TAG, "2");
                 OkHttpClient client = new OkHttpClient();
 
                 Log.e(TAG, "GPS 3 id = " + String.valueOf(idtreak));
                 RequestBody formBody = new FormBody.Builder()
                         .addEncoded("track_id", String.valueOf(idtreak))
                         .build();
-                Log.e(TAG, "4");
 
 
                 Request request = new Request.Builder()
@@ -708,10 +737,8 @@ public class TuristFragment extends Fragment implements
                 callback.onResponse(call, response);
                 message = response.body().string().trim();
 
-                Log.e(TAG, message);
-
-                Log.e(TAG, "messageGPS 3 = " + message);
-                Log.e(TAG, response.message() + ":code");
+                Log.e("GPS 3", "messageGPS 3 = " + message);
+                Log.e("GPS 3", response.message() + ":code");
 
 //                                idreg = getStatus("id",srt);
 
@@ -1036,10 +1063,11 @@ public class TuristFragment extends Fragment implements
         public void run() {
             markersPaint = 1;
 
-            Log.e(TAG, "Цикл пошёл1");
+            Log.e("Timer", "Цикл пошёл1");
             if (hasConnection(getContext())) {
                 database = dbHelper.getReadableDatabase();
                 Cursor cursor = database.query(dbHelper.TABLE_message, null, null, null, null, null, null);
+
                 if (cursor.moveToFirst()) {
                     sendMessageDB(getContext());
                 }
@@ -1080,20 +1108,20 @@ public class TuristFragment extends Fragment implements
 //                    database.insert(DBHellp.TABLE_TREAKS, null, contentValues);
 
 
-                    Log.e(TAG, "Network true-connect");
-                    Log.e(TAG, gpsmyX + " " + gpsmyY);
-                    Log.e(TAG, String.valueOf(sharedPreferences.getInt("track_id", 0)));
+                    Log.e("Timer", "Network true-connect");
+                    Log.e("Timer", gpsmyX + " " + gpsmyY);
+                    Log.e("Timer", String.valueOf(sharedPreferences.getInt("track_id", 0)));
                     if (sharedPreferences.getInt("track_id", 0) == 0) {
                         INSERTtoGps1 in1 = new INSERTtoGps1();
                         in1.execute();
-                        Log.e(TAG, "иду за id");
+                        Log.e("Timer", "иду за id");
                     }
 
                     INSERTtoGps2 in2 = new INSERTtoGps2();
                     in2.execute();
 
                 } else {
-                    Log.e(TAG, "Network falsе-connect");
+                    Log.e("Timer", "Network falsе-connect");
 
                     if(markONE==0) {
 //                        Bundle bundle = new Bundle();
@@ -1118,7 +1146,7 @@ public class TuristFragment extends Fragment implements
                     database = dbHelper.getReadableDatabase();
                     Cursor cursor = database.query(dbHelper.TABLE_TREAKS, null, null, null, null, null, null);
                     if (cursor.moveToFirst()) {
-                        Log.e(TAG, "input");
+                        Log.e("Timer", "input");
 
                         int helpKey1 = cursor.getColumnIndex(DBHellp.KEY_X);
                         int helpKey2 = cursor.getColumnIndex(DBHellp.KEY_Y);
@@ -1131,11 +1159,11 @@ public class TuristFragment extends Fragment implements
                             dataS = cursor.getString(helpKey4);
                             markerS = cursor.getString(helpKey5);
 
-                            Log.e(TAG, "X = " + gpsmymX);
-                            Log.e(TAG, "Y = " + gpsmymY);
-                            Log.e(TAG, "Data = " + dataS);
-                            Log.e(TAG, "idtreak = " + idtreakS);
-                            Log.e(TAG, "markers = " + markerS);
+                            Log.e("Timer i", "X = " + gpsmymX);
+                            Log.e("Timer i", "Y = " + gpsmymY);
+                            Log.e("Timer i", "Data = " + dataS);
+                            Log.e("Timer i", "idtreak = " + idtreakS);
+                            Log.e("Timer i", "markers = " + markerS);
 
 
                             geoArray = new JSONObject();
@@ -1152,10 +1180,10 @@ public class TuristFragment extends Fragment implements
                             Geo.put(geoArray);
                         }
                         while (cursor.moveToNext());
-                        Log.e(TAG, String.valueOf(Geo));
+                        Log.e("Timer in DB", String.valueOf(Geo));
 
                     } else {
-                        Log.e(TAG, "no input");
+                        Log.e("Timer", "no input");
                     }
 
                 }
@@ -1197,6 +1225,8 @@ public class TuristFragment extends Fragment implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.e("error conect", connectionResult.toString());
+        Log.e("error conect", connectionResult.getErrorMessage() + " error code");
 
     }
 
@@ -1272,6 +1302,7 @@ public class TuristFragment extends Fragment implements
 
     }
 
+    final static int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -1282,7 +1313,24 @@ public class TuristFragment extends Fragment implements
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setBuildingsEnabled(false);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getContext(), "Not permission", Toast.LENGTH_SHORT).show();
+            Log.e("PERMISS MapReady", "FALSE");
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    PERMISSION_REQUEST_CODE);
             return;
+        } else {
+            Log.e("PERMISS MapReady", "true");
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    PERMISSION_REQUEST_CODE);
+            mMap.setMyLocationEnabled(true);
         }
         if (mGoogleApiClient == null) {
             Log.e(TAG, "googleapi");
@@ -1297,7 +1345,7 @@ public class TuristFragment extends Fragment implements
             Log.e("Marker", "not");
         }
 
-        mMap.setMyLocationEnabled(true);
+
 
 
         init();
@@ -1424,19 +1472,28 @@ public class TuristFragment extends Fragment implements
         Log.e(TAG, "startLocationUpdates");
         mGoogleApiClient.connect();
 
+
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             Log.e("PERMISSION", "false");
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    PERMISSION_REQUEST_CODE);
             return;
         }
         if (mGoogleApiClient != null) {
-            //  Log.e("error Null", mGoogleApiClient.toString()+" =");
+            Log.e("error Null", mGoogleApiClient.toString() + " =");
         }
         if (mLocationRequest != null) {
-            //  Log.e("error Null", mLocationRequest.toString()+" =");
+            Log.e("error Null", mLocationRequest.toString() + " =");
 
         }
-        Log.e("res", String.valueOf(LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)) + ":ответ");
+        Log.e("error", mGoogleApiClient.isConnected() + " code");
+        Log.e("error", mGoogleApiClient.isConnecting() + " code");
+        // Log.e("res", String.valueOf(LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)) + ":ответ");
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
 

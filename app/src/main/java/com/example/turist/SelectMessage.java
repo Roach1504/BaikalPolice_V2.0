@@ -1,7 +1,5 @@
 package com.example.turist;
 
-import android.*;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -27,7 +25,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
@@ -142,7 +139,7 @@ public class SelectMessage extends Fragment implements
         mMap.setMyLocationEnabled(true);
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(y, x))
-                .title("Hello world"));
+                .title(""));
     }
 
 
