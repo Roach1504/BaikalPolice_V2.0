@@ -1203,9 +1203,10 @@ public class TuristFragment extends Fragment implements
 
     @Override
     public void onPause() {
+        Log.e(TAG, "timer stop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! onPause");
         if (sharedPreferences.getInt("mark", 0) == 1) {
-            mTimer.cancel();
-            Log.e(TAG, "timer stop;");
+            //      mTimer.cancel();
+            Log.e(TAG, "timer stop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         super.onPause();
     }
@@ -1230,6 +1231,18 @@ public class TuristFragment extends Fragment implements
 
     }
 
+
+    @Override
+    public void onStop() {
+        Log.e("Activity", "onStop!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e("Activity", "onDestroy!!!!!!!!!!!!!!!!!!!!!!!!");
+        super.onDestroy();
+    }
 
     @Override
     public void onLocationChanged(Location location) {

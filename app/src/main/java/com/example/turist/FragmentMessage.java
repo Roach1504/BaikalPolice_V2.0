@@ -1,37 +1,29 @@
 package com.example.turist;
 
 import android.Manifest;
-
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.graphics.Bitmap;
-
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,14 +34,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -68,26 +57,20 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-
 import okhttp3.Response;
-import android.support.v4.app.DialogFragment;
 
 
 public class FragmentMessage extends Fragment implements
@@ -172,7 +155,7 @@ public class FragmentMessage extends Fragment implements
         aD.setCancelable(false);
         aD.show();
 
-        class SendMessageServer extends AsyncTask<Void, Void, Void> {
+        class SendMessageServer extends AsyncTask<Void, Void, String> {
                 String message;
 
                 protected String getStatus(String key, String strJson) {
@@ -188,8 +171,7 @@ public class FragmentMessage extends Fragment implements
                 }
 
 
-
-                protected Void doInBackground(Void... bitmam) {
+            protected String doInBackground(Void... bitmam) {
                     JSONArray messages = new JSONArray();
                     JSONObject messageArrayH = new JSONObject();
 
@@ -242,11 +224,11 @@ public class FragmentMessage extends Fragment implements
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    return null;
+                return message;
                 }
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
+                protected void onPostExecute(String aVoid) {
                     super.onPostExecute(aVoid);
                   //  mImageView.setImageResource(R.drawable.ic_camera_alt_black_24dp);
                     mImageView.setVisibility(View.VISIBLE);
@@ -260,11 +242,32 @@ public class FragmentMessage extends Fragment implements
 
             SendMessageServer sendMessageServer = new SendMessageServer();
             sendMessageServer.execute();
-            //Log.e("CATEG "," список " +categ.toString());
+        try {
+            String respons = sendMessageServer.get();
+            if (respons == null) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DBHellp.DATE_MESSAGE, date);
+                contentValues.put(DBHellp.KEY_X_MESSAGE, gpsX);
+                contentValues.put(DBHellp.KEY_Y_MESSAGE, gpsY);
+                contentValues.put(DBHellp.TEXT_MESSAGE, text);
+                contentValues.put(DBHellp.CATEG_MESSAGE, categr);
+                contentValues.put(DBHellp.ID_USER_MESSAGE, id);
+                contentValues.put(DBHellp.IMAGE_MESSAG, toBase);
+                database.insert(DBHellp.TABLE_message, null, contentValues);
+                Toast.makeText(getContext(), "Сообщение сохранено ", Toast.LENGTH_SHORT).show();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        //Log.e("CATEG "," список " +categ.toString());
     }
 
     public void saveMessage(Context context, double gpsX, double gpsY, String date, String text, String categ, String id){
 
+        dbHelper = new DBHellp(context);
+        database = dbHelper.getWritableDatabase();
         if(hasConnection(context)) {
             sendMessage(gpsX, gpsY, date, text, getIdCateg(categ,context), id);
         }

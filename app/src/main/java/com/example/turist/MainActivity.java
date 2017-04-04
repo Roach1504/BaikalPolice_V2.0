@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 // cb = "69";//// TODO: 01.02.2017
 
-                                aD.dismiss();
+                                //aD.dismiss();
                                 if(!cb.isEmpty()){
                                     Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                                     sharedPreferences1.edit().putString("id", cb).commit();
