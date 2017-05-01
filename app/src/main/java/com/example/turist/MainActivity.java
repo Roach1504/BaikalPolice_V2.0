@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -170,10 +172,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public ProgressDialog aD;
+    SQLiteDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(new File(this.getApplicationContext().getExternalFilesDir(null),"exceptions.log"), getApplicationContext()));
+
+        dbHelper = new DBHellp(getApplicationContext());
+        database = dbHelper.getReadableDatabase();
+        Cursor cursor = database.query(dbHelper.TABLE_ERROR, null, null, null, null, null, null);
+        String log = null;
+
+        if (cursor.moveToFirst()) {
+            Log.e("error", "true");
+            int keyX = cursor.getColumnIndex(DBHellp.KEY_ERROR);
+            do {
+                JSONObject messageH = new JSONObject();
+                try {
+                    messageH.put("x", cursor.getString(keyX));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.e("ERROR", "Error: " + cursor.getString(keyX));
+                log = cursor.getString(keyX);
+            }
+            while (cursor.moveToNext());
+        } else {
+            Log.e("error", "false");
+        }
+        if (log != null) {
+            sendError(log);
+
+        }
         Log.e("onCreateMain", "ok");
 
         setContentView(R.layout.activity_main);
@@ -336,6 +368,90 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void sendError(final String log) {
+        class INSERTtoGps extends AsyncTask<Void, Void, String> {
+
+
+            public String getStatus(String key, String strJson) {
+                JSONObject dataJsonObj = null;
+                String secondName = "";
+                try {
+                    dataJsonObj = new JSONObject(strJson);
+                    secondName = dataJsonObj.getString(key);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return secondName;
+            }
+
+            protected String doInBackground(Void... params) {
+                try {
+
+
+                    Log.e(TAG, "2");
+                    OkHttpClient client = new OkHttpClient();
+
+
+                    Log.e(TAG, "3");
+                    RequestBody formBody = new FormBody.Builder()
+                            .addEncoded("text", log)
+                            //.addEncoded('photo', photo)
+                            .build();
+                    Log.e(TAG, "4");
+
+
+                    Request request = new Request.Builder()
+                            .url("http://109.120.189.141:81/web/api/track/add-log")
+                            //.url("http://192.168.0.103/web/api/track/login")
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .post(formBody)
+                            .build();
+
+                    Log.e("Request", request.toString());
+                    okhttp3.Call call = client.newCall(request);
+                    Response response = call.execute();
+                    callback = new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+
+                        }
+                    };
+
+                    callback.onResponse(call, response);
+                    message = response.body().string().trim();
+
+                    Log.e(TAG, message);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return getStatus("status", message);
+            }
+        }
+        String mes;
+        INSERTtoGps in = new INSERTtoGps();
+        in.execute();
+        try {
+            mes = in.get();
+
+            if (mes.equals("success")) {
+                Log.e("error", "ok");
+                database.delete(dbHelper.TABLE_ERROR, null, null);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean hasConnection(final Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);

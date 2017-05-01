@@ -13,6 +13,10 @@ public class DBHellp  extends SQLiteOpenHelper{
     public static final String TABLE_paint = "paint";
     public static final String TABLE_message = "message";
     public  static final String TABLE_CATEG = "categorii";
+    public static final String TABLE_ERROR = "error";
+
+
+    public static final String KEY_ERROR = "log";
 
     public static final String KEY_TRACK_ID = "track_id";
     public static final String KEY_X = "x";
@@ -41,6 +45,9 @@ public class DBHellp  extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("create table " + TABLE_ERROR + "("
+                + KEY_ERROR + " text" + ");");
+
         db.execSQL("create table " + TABLE_TREAKS + "("
                 + KEY_TRACK_ID + " text,"
                 + KEY_X + " text,"
